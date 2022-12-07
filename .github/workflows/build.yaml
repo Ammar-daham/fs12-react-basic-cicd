@@ -11,8 +11,18 @@ jobs:
         with: 
           node-version: 16
 
+      - name: Checkout code
+        uses: actions/checkout@v1
+
       - name: Install packages
         run: npm install
-        
+
+      - name: Run tests
+        run: npm test        
           
+      - name: Linting
+        run: npm run lint
+
+      - name: Building
+        run: npm build
 
