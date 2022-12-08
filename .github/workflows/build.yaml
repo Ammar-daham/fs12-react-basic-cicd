@@ -36,14 +36,16 @@ jobs:
 
       - name: Building
         run: npm run build
-
-      - name: Deploying to Netlify
-        uses: netlify/actions/cli@master
+        
+      - name: Deploying to AWS
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          args: deploy --dir=build --prod
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Deploy static site to s3 bucket
+        run: aws s3 sync ./build s3://react-s3-cicd-githup-actions
+
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -58,7 +60,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ammarfad/react-cicd:latest
+          tags: ammarfad /react-cicd:latest
 
       
 
